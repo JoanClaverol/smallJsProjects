@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Eight Ball</title>
+    <!-- get bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="col-12">
+            <p class="display-4 text-center">See your future thanks to the magic ball!</p>
+        </div>
+    </div>
+    <div class="container mt-5 mb-5">
+        <div class="col-12 text-center">
+            <button onclick="getRandomAnswer()" class="btn btn-primary lead">Get your answer</button>
+        </div>
+        <div class="col-12 text-center">
+            <div class="lead" id="answer"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-12 text-center">
+            <a href="index.html" class="display-5">Go Home!</a>
+        </div>
+    </div>
+    <script src="magicEightBall.js"></script>
+</body>
+
+</html>

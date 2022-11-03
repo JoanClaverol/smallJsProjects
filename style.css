@@ -1,0 +1,11 @@
+/* reomve underline and blue color for a tags */
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+#rock,
+#paper,
+#scissors {
+    width: 7rem;
+}
