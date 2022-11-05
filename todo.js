@@ -16,3 +16,10 @@ function deleteTask(element) {
     // remove task from list
     task.parentNode.removeChild(task);
 };
+
+function editTask(element) {
+    // edit task
+    let task = element.parentNode.parentNode.getElementsByTagName('div')[0];
+    let originTask = task.innerHTML;
+    element.parentNode.parentNode.getElementsByTagName('div')[0].innerHTML = '<input type="text" id="editTask" value="' + originTask + '">';;
+};
