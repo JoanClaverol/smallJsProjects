@@ -1,4 +1,4 @@
-function getTask() {
+const getTask = function () {
     let task = document.getElementById('inputTask').value;
     if (task === '') {
         return;
@@ -11,21 +11,25 @@ function getTask() {
     document.getElementById('inputTask').value = '';
 };
 
-function deleteTask(element) {
+const deleteTask = function (element) {
     let task = element.parentNode.parentNode;
     // remove task from list
     task.parentNode.removeChild(task);
 };
 
-function editTask(element) {
+const editTask = function (element) {
     // edit task
     let task = element.parentNode.parentNode.getElementsByTagName('div')[0];
+    task.style.display = 'none';
     let originTask = task.innerHTML;
-    element.parentNode.parentNode.getElementsByTagName('div')[0].innerHTML = '<input type="text" class="form-control" id="editTask" value="' + originTask + '">';
-    element.parentNode.innerHTML = '<button class="btn btn-success" type="button" id="saveButton" onclick="saveTask(this)">Save</button><button class="btn btn-light" type="button" onclick="cancelTask(this, ' + originTask + ')">Cancel</button>';
+    // add a new div after the first div as a first child
+    let editDiv = document.createElement('div');
+    editDiv.innerHTML = '<button class="btn btn-success" type="button" id="saveButton" onclick="saveTask(this)">Save</button><button class="btn btn-light" type="button" onclick="cancelTask(this, \'' + originTask + '\')">Cancel</button>';
+    element.parentNode.parentNode.insertBefore(editDiv, element.parentNode.parentNode.firstChild);
+    element.parentNode.innerHTML = '<button class="btn btn-success" type="button" id="saveButton" onclick="saveTask(this)">Save</button><button class="btn btn-light" type="button" onclick="cancelTask(this)">Cancel</button>';
 };
 
-function saveTask(element) {
+const saveTask = function (element) {
     let task = element.parentNode.parentNode.getElementsByTagName('div')[0];
     let originTask = task.getElementsByTagName('input')[0].value;
     if (originTask === '') {
@@ -35,7 +39,7 @@ function saveTask(element) {
     element.parentNode.innerHTML = '<button class="btn btn-danger" type="button" id="deleteButton" onclick="deleteTask(this)">Delete</button><button class="btn btn-light" type="button" onclick="editTask(this)">Edit</button>';
 };
 
-function cancelTask(element, originTask) {
+const cancelTask = function (element, originTask) {
     let task = element.parentNode.parentNode.getElementsByTagName('div')[0];
     task.innerHTML = originTask;
     element.parentNode.innerHTML = '<button class="btn btn-danger" type="button" id="deleteButton" onclick="deleteTask(this)">Delete</button><button class="btn btn-light" type="button" onclick="editTask(this)">Edit</button>';
