@@ -139,9 +139,10 @@
 .card-modal-buttons>.button {
     /* center text */
     text-align: center;
+    justify-content: center;
     background: black;
     color: #fff;
-    padding: 10px 20px;
+    padding: 10px 0px;
     border: none;
     border-radius: 5px;
     cursor: pointer;

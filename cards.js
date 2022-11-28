@@ -30,72 +30,49 @@ let cardsList = [
         description: 'This is a list of shopping list different than the first one',
     },
 ];
-// add all card on main-container div
+
+// ------------------ MAIN ------------------
 const createCard = (card) => {
+    // create card
     return `
-    <div class="card col-lg-2 col-md-3 col-xs-6">
+    <div class="card col-lg-2 col-md-3 col-xs-6" id=${card.id}>
         <div class="title">
             <span>${card.title}<span>
         </div>
         <div class="description">
             <p>${card.description}</p>
         </div>
-        </div>`;
+    </div>`;
 };
 const getModalInputs = () => {
+    // get title and description from modal
     const title = document.querySelector('.inputTitle').value;
     const description = document.querySelector('.inputDescription').value;
     return { title, description };
 };
 
 const generateCardList = (cardsList) => {
+    // generate cards
     cardsList.forEach((card) => {
         mainContainer.innerHTML += createCard(card);
     });
-    // add event listener to each card
-    const cards = document.querySelectorAll('.card');
-    cards.forEach((card) => {
-        card.addEventListener('click', (e) => {
-            const modal = document.querySelector('.card-modal');
-            const orginalTitle = card.querySelector('.title').innerText;
-            const orginalDescription = card.querySelector('.description').innerText;
-            const cardIndex = cardsList.findIndex(
-                (card) => card.title === orginalTitle && card.description === orginalDescription);
-            document.querySelector('.inputTitle').value = orginalTitle;
-            document.querySelector('.inputDescription').value = orginalDescription;
-            modal.style.display = 'flex';
-            addModal.addEventListener('click', () => {
-                // update card title and description on cardsList
-                const { title, description } = getModalInputs();
-                cardsList[cardIndex].title = title;
-                cardsList[cardIndex].description = description;
-                renderContent();
-                updateSelectors();
-                modal.style.display = 'none';
-            });
-            closeModal.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-        });
-    }
-    );
 };
 
 const renderContent = () => {
-
+    // render content
     mainContainer.innerHTML = `
     <div class="add-card">
             <i class='uil uil-plus'></i>
-        </div>
-        <div class="card-modal">
+    </div>
+    <div class="card-modal">
         <div class="card-modal-content">
-        <div class="card-modal-inputs">
-        <input type="text" class="input inputTitle" placeholder="Title">
-        <textarea class="input inputDescription" placeholder="Description"></textarea>
-        </div>
+            <div class="card-modal-inputs">
+                <input type="text" class="input inputTitle" placeholder="Title">
+                <textarea class="input inputDescription" placeholder="Description"></textarea>
+            </div>
         <div class="card-modal-buttons">
-        <div class="button close">Close</div>
-        <div class="button add">Add</div>
+            <div class="button close">Cancel</div>
+            <div class="button add">Add</div>
         </div>
         </div>
     </div>`;
@@ -103,12 +80,55 @@ const renderContent = () => {
     generateCardList(cardsList);
 };
 
+const updateCard = (card) => {
+    // change display of modal to flex
+    const cardIndex = cardsList.findIndex((tempCard) => tempCard.id == card.getAttribute('id'));
+    document.querySelector('.inputTitle').value = card.querySelector('.title').innerText;
+    document.querySelector('.inputDescription').value = card.querySelector('.description').innerText;
+    modal.style.display = 'flex';
+
+    addModal.addEventListener('click', () => {
+        // update card title and description on cardsList
+        const { title, description } = getModalInputs();
+        if (title && description) {
+
+            cardsList[cardIndex].title = title;
+            cardsList[cardIndex].description = description;
+            // cleanModalInputs();
+            modal.style.display = 'none';
+            addModal.removeEventListener('click', () => { });
+            renderContent();
+            updateSelectors();
+        } else {
+            alert('Please fill all inputs');
+        }
+    });
+    closeModal.addEventListener('click', () => {
+        cleanModalInputs();
+        modal.style.display = 'none';
+        closeModal.removeEventListener('click', () => { });
+    });
+};
+
+
 const updateSelectors = () => {
+    // update selectors
     addCard = document.querySelector('.add-card');
     modal = document.querySelector('.card-modal');
     addModal = document.querySelector('.add');
     closeModal = document.querySelector('.close');
+    const cards = document.querySelectorAll('.card');
+
     addCard.addEventListener('click', () => generateNewCard());
+
+    cards.forEach((card) => {
+        card.addEventListener('click', () => { updateCard(card) });
+    });
+};
+
+const cleanModalInputs = () => {
+    document.querySelector('.inputTitle').value = '';
+    document.querySelector('.inputDescription').value = '';
 };
 
 const generateNewCard = () => {
@@ -122,18 +142,19 @@ const generateNewCard = () => {
                 title,
                 description,
             };
-
             cardsList.push(newCard);
+            cleanModalInputs();
+            addModal.removeEventListener('click', () => { });
             renderContent();
+            updateSelectors();
         } else {
             alert('Please fill all inputs');
         }
-        updateSelectors();
     });
     closeModal.addEventListener('click', () => {
-        document.querySelector('.inputTitle').value = '';
-        document.querySelector('.inputDescription').value = '';
+        cleanModalInputs();
         modal.style.display = 'none';
+        closeModal.removeEventListener('click', () => { });
     });
 };
 
@@ -144,8 +165,12 @@ let addCard = document.querySelector('.add-card');
 let modal = document.querySelector('.card-modal');
 let addModal = document.querySelector('.add');
 let closeModal = document.querySelector('.close');
+let cards = document.querySelectorAll('.card');
 
 
 addCard.addEventListener('click', () => {
     generateNewCard();
+});
+cards.forEach((card) => {
+    card.addEventListener('click', () => { updateCard(card) });
 });
